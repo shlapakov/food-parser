@@ -25,7 +25,7 @@ class Category
     puts "Total links – #{@links_to_items.size}"
     end
 
-  def products
+  def items
     @links_to_items
   end
 end
