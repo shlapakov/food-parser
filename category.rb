@@ -9,17 +9,23 @@ class Category
     @links_to_products = []
   end
 
-  def get_site_html
-    http = Curl.get(@url)
-    @html = Nokogiri::HTML(http.body)
-  end
-
   def get_links_to_products
-    links = @html.xpath($XPATH_PRODUCT)
-    links.each do |link|
-      @links_to_products << link.value
+    p = 1
+    begin
+      http = Curl.get(@url + "?p=#{p}")
+      http = Curl.get(@url) if p == 1 #needs to load first page
+      html = Nokogiri::HTML(http.body)
+      links = html.xpath($XPATH_PRODUCT)
+      links.each do |link|
+        @links_to_products << link.value
+      end
+      puts "I just loaded page \##{p}" if links.size > 0
+      p += 1
+    end while links.size > 0
+    puts "Total links – #{@links_to_products.size}"
     end
-    puts @links_to_products
-  end
 
+  def products
+    @links_to_products
+  end
 end
