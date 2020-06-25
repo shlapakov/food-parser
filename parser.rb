@@ -8,8 +8,8 @@ file_name = ARGV[1]
 puts "Trying to parse #{url_to_parse}"
 start_time = Time.now
 category = Category.new(url_to_parse)
-category.get_links_to_products
-items = ItemGetter.new(category.products)
+category.get_links_to_items
+items = ItemGetter.new(category.items)
 items.get_items
 CSVMaker.write_csv(items.items, file_name)
 puts "Time of parsing – #{Time.now - start_time} seconds."
